@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 自定义项目主题颜色文件 -->
+    <link rel="stylesheet" href="element/index.css">
     <title>Document</title>
     <style>
         /*  vue这个指令可以隐藏未编译的 Mustache 标签直到实例准备完毕。 */
@@ -79,43 +80,40 @@
                 </el-header>
                 
                 <el-main>
-                     <el-table :data="tableData" style="width: 100%" stripe>
-                       <el-table-column prop="date" label="日期" ></el-table-column>
-                       <el-table-column prop="name" label="姓名" ></el-table-column>
-                       <el-table-column prop="address" label="地址"></el-table-column>
+                     <el-table v-loading="isLoading" :data="tableData" style="width: 100%" stripe style="text-align: center">
+                       <el-table-column prop="id" label="ID" ></el-table-column>
+                       <el-table-column prop="last_reply_at" label="日期" ></el-table-column>
+                       <el-table-column prop="reply_count" label="数"></el-table-column>
+                       <el-table-column prop="title" label="标题"></el-table-column>
                      </el-table>
                 </el-main>
+                <template >
+                <div class="block" style="margin-top: 30px">
+                   
+                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage4" :page-sizes="[5, 10, 50, 100]" :page-size="5"  layout="total, sizes, prev, pager, next, jumper"  :total="400">
+                    </el-pagination>
+                </div>
+            </template>
             </el-container>
+            
         </el-container>
+       
     </div>   
 </body>
 <!-- 先引入 Vue -->
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <!-- 引入组件库  饿了me组件 -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+<!-- 引入调用数据的js文件 -->
+<script src="https://unpkg.com/axios/dist/axios.min.js
+"></script>
 <script type="text/javascript">
    new Vue({
        el:"#app",
        data:{
-           
-            tableData: [{
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-            }]
-        
+            isLoading: true,//初始化加载时转圈
+            tableData: []//页面数据饿数组       
        },
        methods: {
         handleOpen:function(e) {
@@ -123,8 +121,33 @@
         },
         handleClose:function(e){
             this.$alert(e);
+        },
+        // 获得数据的接口及赋值
+        gedata:function(){
+            axios.get('https://cnodejs.org/api/v1/topics', {
+                params: {
+                page:1,
+                limet:10
+                }
+            })
+            .then(function (response) {
+                //给定义的数组赋值,response.data.data从接口接到的数据
+                this.tableData=response.data.data;
+                this.isLoading=false;
+            }.bind(this))
+            .catch(function (error) {
+                console.log(error);
+            });
         }
+        
+      },
+    //   钩子函数,出发方法,还有created:function(){}
+      mounted:function(){
+          this.gedata();
       }
+         
+     
+       
     
 
    })
