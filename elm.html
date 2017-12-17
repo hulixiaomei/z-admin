@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <title>Document</title>
+    <style>
+        /*  vue这个指令可以隐藏未编译的 Mustache 标签直到实例准备完毕。 */
+        [v-cloak] {
+        display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" >
+        <el-container style="height: 500px; border: 1px solid #eee" v-cloak>
+
+            <el-aside width="200px" style="border-right:  1px solid #ccc" >
+                
+                <el-menu @open="handleOpen" @close="handleClose">
+                    <i class="el-icon-share">MAN</i>
+                    <el-submenu index="1">
+                            <template slot="title"><i class="el-icon-message"></i>文章管理</template>
+                    <el-menu-item-group>
+                        <!-- <template slot="title">分组一</template> -->
+                        <el-menu-item index="1-1">选项1</el-menu-item>
+                        <el-menu-item index="1-2">选项2</el-menu-item>
+                    </el-menu-item-group>                  
+                     </el-submenu>
+                     <el-submenu index="2">
+                            <template slot="title"><i class="el-icon-upload"></i>人员管理</template>       
+                    <el-menu-item-group>
+                        <!-- <template slot="title">分组一</template> -->
+                        <el-menu-item index="2-1">选项1</el-menu-item>
+                        <el-menu-item index="2-2">选项2</el-menu-item>
+                    </el-menu-item-group>                  
+                     </el-submenu>
+                     <el-submenu index="3">
+                            <template slot="title"><i class="el-icon-setting"></i>设置</template>       
+                    <el-menu-item-group>
+                        <!-- <template slot="title">分组一</template> -->
+                        <el-menu-item index="3-1">选项1</el-menu-item>
+                        <el-menu-item index="3-2">选项2</el-menu-item>
+                    </el-menu-item-group>                  
+                     </el-submenu>
+                </el-menu>
+
+            </el-aside>
+        
+            <el-container>
+                <el-header style=" font-size: 12px;background:#ccc;line-height:60px;">
+                    <el-breadcrumb separator="/"style="display:inline-block;text-align: left;" >
+                        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+                        <el-breadcrumb-item>活动管理</el-breadcrumb-item>
+                        <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+                        <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+                    </el-breadcrumb>
+                    <div style="margin-left:200px;display:inline-block;">
+                        <span>hulixiaomei</span>
+                        <el-dropdown>
+                                <img src="images/logo.jpg" alt="" style="width:30px;vertical-align: middle;border-radius: 50%;">
+                                <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item>个人中心</el-dropdown-item>
+                                <el-dropdown-item>设置</el-dropdown-item>
+                                <el-dropdown-item>其他</el-dropdown-item>
+                                </el-dropdown-menu>
+                        </el-dropdown>
+                    </div>
+                </el-header>
+                
+                <el-main>
+                     3
+                </el-main>
+            </el-container>
+        </el-container>
+    </div>   
+</body>
+<!-- 先引入 Vue -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- 引入组件库  饿了me组件 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script type="text/javascript">
+   new Vue({
+       el:"#app",
+       methods: {
+        handleOpen:function(e) {
+            this.$alert(e);
+        },
+        handleClose:function(e){
+            this.$alert(e);
+        }
+      }
+    
+
+   })
+</script>
+</html>
