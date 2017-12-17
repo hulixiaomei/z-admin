@@ -51,27 +51,39 @@
         
             <el-container>
                 <el-header style=" font-size: 12px;background:#ccc;line-height:60px;">
-                    <el-breadcrumb separator="/"style="display:inline-block;text-align: left;" >
-                        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-                        <el-breadcrumb-item>活动管理</el-breadcrumb-item>
-                        <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-                        <el-breadcrumb-item>活动详情</el-breadcrumb-item>
-                    </el-breadcrumb>
-                    <div style="margin-left:200px;display:inline-block;">
-                        <span>hulixiaomei</span>
-                        <el-dropdown>
-                                <img src="images/logo.jpg" alt="" style="width:30px;vertical-align: middle;border-radius: 50%;">
-                                <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item>个人中心</el-dropdown-item>
-                                <el-dropdown-item>设置</el-dropdown-item>
-                                <el-dropdown-item>其他</el-dropdown-item>
-                                </el-dropdown-menu>
-                        </el-dropdown>
-                    </div>
+                    <el-row>
+                      <el-col :span="20">
+                           <el-breadcrumb separator="/"style="display:inline-block;text-align: left;" >
+                                <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+                                <el-breadcrumb-item>活动管理</el-breadcrumb-item>
+                                <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+                                <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+                            </el-breadcrumb>
+                       </el-col>
+                        <el-col :span="4">
+                    
+                            <div style="display:inline-block;">
+                                <span>hulixiaomei</span>
+                                <el-dropdown>
+                                        <img src="images/logo.jpg" alt="" style="width:30px;vertical-align: middle;border-radius: 50%;">
+                                        <el-dropdown-menu slot="dropdown">
+                                        <el-dropdown-item>个人中心</el-dropdown-item>
+                                        <el-dropdown-item>设置</el-dropdown-item>
+                                        <el-dropdown-item>其他</el-dropdown-item>
+                                        </el-dropdown-menu>
+                                </el-dropdown>
+                            </div>
+                        </el-col>
+                    </el-row>
+
                 </el-header>
                 
                 <el-main>
-                     3
+                     <el-table :data="tableData" style="width: 100%" stripe>
+                       <el-table-column prop="date" label="日期" ></el-table-column>
+                       <el-table-column prop="name" label="姓名" ></el-table-column>
+                       <el-table-column prop="address" label="地址"></el-table-column>
+                     </el-table>
                 </el-main>
             </el-container>
         </el-container>
@@ -84,6 +96,27 @@
 <script type="text/javascript">
    new Vue({
        el:"#app",
+       data:{
+           
+            tableData: [{
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄'
+            }, {
+            date: '2016-05-04',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1517 弄'
+            }, {
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄'
+            }, {
+            date: '2016-05-03',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1516 弄'
+            }]
+        
+       },
        methods: {
         handleOpen:function(e) {
             this.$alert(e);
