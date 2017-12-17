@@ -82,16 +82,26 @@
                 <el-main>
                      <el-table v-loading="isLoading" :data="tableData" style="width: 100%" stripe style="text-align: center">
                        <el-table-column prop="id" label="ID" ></el-table-column>
-                       <el-table-column prop="last_reply_at" label="日期" ></el-table-column>
+                       <el-table-column sortable   label="日期" >
+                            <template slot-scope="scope">
+                                <i class="el-icon-time"></i>
+                                <span>{{scope.row.last_reply_at}}</span>
+                            </template>
+                       </el-table-column>
                        <el-table-column prop="reply_count" label="数"></el-table-column>
                        <el-table-column prop="title" label="标题"></el-table-column>
+                       <el-table-column sortable  label="操作">
+                            <template slot-scope="scope">
+                                    <el-button size="mini" type="danger" @click="remove(scope.$index)">删除</el-button>
+                            </template>
+                           
+                        </el-table-column>
                      </el-table>
                 </el-main>
                 <template >
                 <div class="block" style="margin-top: 30px">
                    <!-- page-size:代表一页内显示多少条信息,@size-change:="changeSize" 改变一页显示多少钱条的方法 ,@current-change="changCurrente" :变换页数的-->
                     <el-pagination
-                    
                         @size-change="changeSize" 
                         @current-change="changCurrente" 
                         :current-page="activePage" 
@@ -102,10 +112,23 @@
                     </el-pagination>
                 </div>
             </template>
-            </el-container>
-            
+            </el-container>           
         </el-container>
-       
+        <!-- 编辑dialog -->
+       <!-- <el-dialog title="">
+            <el-alert type="success" title="" show-icon >
+                当前索引:{{form.index}}
+            </el-alert>
+            <el-form :model="form" label-position="left" label-width="80px" style="margin-top: 30px">
+              <el-form-item label="标题">
+                  <el-input v-model="form.title" placeholder="" auto-complete="off"></el-input>
+              </el-form-item>
+            </el-form>
+            <div>
+                <el-button type="" @click="isShowEditPanel = false">取消</el-button>
+                <el-button type="primary" @click="saveEdit = false">确定</el-button>
+            </div>
+       </el-dialog> -->
     </div>   
 </body>
 <!-- 先引入 Vue -->
@@ -114,8 +137,7 @@
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 
 <!-- 引入调用数据的js文件 -->
-<script src="https://unpkg.com/axios/dist/axios.min.js
-"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script type="text/javascript">
    new Vue({
        el:"#app",
@@ -158,27 +180,29 @@
          // 当前页数,第几页,改变页数
         changCurrente:function(Page){
                 this.activePage=Page;
+        },
+        remove:function(index){
+
         }
         
       },
+
+
     //   钩子函数,出发方法,还有created:function(){}
       mounted:function(){
           this.getdata();
       },
+      
       watch:{
         //   监听的变量,异步完成数据更新
-        activePage(){
+        activePage:function(){
             this.getdata();
         },
-        activPageSize(){
+        activPageSize:function(){
             this.getdata();
         }
       }
          
-     
-       
-    
-
    })
 </script>
 </html>
