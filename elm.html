@@ -89,8 +89,16 @@
                 </el-main>
                 <template >
                 <div class="block" style="margin-top: 30px">
-                   
-                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage4" :page-sizes="[5, 10, 50, 100]" :page-size="5"  layout="total, sizes, prev, pager, next, jumper"  :total="400">
+                   <!-- page-size:代表一页内显示多少条信息,@size-change:="changeSize" 改变一页显示多少钱条的方法 ,@current-change="changCurrente" :变换页数的-->
+                    <el-pagination
+                    
+                        @size-change="changeSize" 
+                        @current-change="changCurrente" 
+                        :current-page="activePage" 
+                        :page-sizes="[5, 10, 50, 100]" 
+                        :page-size="activPageSize" 
+                        layout="total, sizes, prev, pager, next, jumper" 
+                        :total="400">
                     </el-pagination>
                 </div>
             </template>
@@ -113,7 +121,11 @@
        el:"#app",
        data:{
             isLoading: true,//初始化加载时转圈
-            tableData: []//页面数据饿数组       
+            tableData: [],//页面数据饿数组  
+            activePage:1,//当前页数
+            activPageSize:10//显示多少条
+       
+
        },
        methods: {
         handleOpen:function(e) {
@@ -123,11 +135,11 @@
             this.$alert(e);
         },
         // 获得数据的接口及赋值
-        gedata:function(){
+        getdata:function(){
             axios.get('https://cnodejs.org/api/v1/topics', {
                 params: {
-                page:1,
-                limet:10
+                page:this.activePage,//当前第几页
+                limit:this.activPageSize//一页显示多少条
                 }
             })
             .then(function (response) {
@@ -138,12 +150,29 @@
             .catch(function (error) {
                 console.log(error);
             });
+        },
+        // 页内显示多少条 
+        changeSize:function(page){
+                this.activPageSize=page;
+        },
+         // 当前页数,第几页,改变页数
+        changCurrente:function(Page){
+                this.activePage=Page;
         }
         
       },
     //   钩子函数,出发方法,还有created:function(){}
       mounted:function(){
-          this.gedata();
+          this.getdata();
+      },
+      watch:{
+        //   监听的变量,异步完成数据更新
+        activePage(){
+            this.getdata();
+        },
+        activPageSize(){
+            this.getdata();
+        }
       }
          
      
