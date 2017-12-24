@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- 自定义项目主题颜色文件 -->
+    <link rel="stylesheet" href="element/index.css">
+    <title>Document</title>
+    <style>
+        /*  vue这个指令可以隐藏未编译的 Mustache 标签直到实例准备完毕。 */
+        [v-cloak] {
+        display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" >
+        <el-container style="height: 500px; border: 1px solid #eee" v-cloak>
+
+            <el-aside width="200px" style="border-right:  1px solid #ccc" >
+                
+                <el-menu @open="handleOpen" @close="handleClose">
+                    <i class="el-icon-share">MAN</i>
+                    <el-submenu index="1">
+                            <template slot="title"><i class="el-icon-message"></i>文章管理</template>
+                    <el-menu-item-group>
+                        <!-- <template slot="title">分组一</template> -->
+                        <el-menu-item index="1-1">选项1</el-menu-item>
+                        <el-menu-item index="1-2">选项2</el-menu-item>
+                    </el-menu-item-group>                  
+                     </el-submenu>
+                     <el-submenu index="2">
+                            <template slot="title"><i class="el-icon-upload"></i>人员管理</template>       
+                    <el-menu-item-group>
+                        <!-- <template slot="title">分组一</template> -->
+                        <el-menu-item index="2-1">选项1</el-menu-item>
+                        <el-menu-item index="2-2">选项2</el-menu-item>
+                    </el-menu-item-group>                  
+                     </el-submenu>
+                     <el-submenu index="3">
+                            <template slot="title"><i class="el-icon-setting"></i>设置</template>       
+                    <el-menu-item-group>
+                        <!-- <template slot="title">分组一</template> -->
+                        <el-menu-item index="3-1">选项1</el-menu-item>
+                        <el-menu-item index="3-2">选项2</el-menu-item>
+                    </el-menu-item-group>                  
+                     </el-submenu>
+                </el-menu>
+
+            </el-aside>
+        
+            <el-container>
+                <el-header style=" font-size: 12px;background:#ccc;line-height:60px;">
+                    <el-row>
+                      <el-col :span="20">
+                           <el-breadcrumb separator="/"style="display:inline-block;text-align: left;" >
+                                <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+                                <el-breadcrumb-item>活动管理</el-breadcrumb-item>
+                                <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+                                <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+                            </el-breadcrumb>
+                       </el-col>
+                        <el-col :span="4">
+                    
+                            <div style="display:inline-block;">
+                                <span>hulixiaomei</span>
+                                <el-dropdown>
+                                        <img src="images/logo.jpg" alt="" style="width:30px;vertical-align: middle;border-radius: 50%;">
+                                        <el-dropdown-menu slot="dropdown">
+                                        <el-dropdown-item>个人中心</el-dropdown-item>
+                                        <el-dropdown-item>设置</el-dropdown-item>
+                                        <el-dropdown-item>其他</el-dropdown-item>
+                                        </el-dropdown-menu>
+                                </el-dropdown>
+                            </div>
+                        </el-col>
+                    </el-row>
+
+                </el-header>
+                
+                <el-main>
+                    
+                    <!-- <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                        <el-form-item label="文章标题" prop="name">
+                          <el-input v-model="ruleForm.name"></el-input>
+                        </el-form-item>
+                        <el-form-item label="文章类型" prop="region">
+                          <el-select v-model="ruleForm.region" placeholder="请选择文章类型">
+                            <el-option label="类型一" value="shanghai"></el-option>
+                            <el-option label="类型二" value="beijing"></el-option>
+                          </el-select>
+                        </el-form-item>
+                        <el-form-item label="发布时间" required>
+                          <el-col :span="11">
+                            <el-form-item prop="date1">
+                              <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
+                            </el-form-item>
+                          </el-col>
+                          <el-col class="line" :span="2">-</el-col>
+                          <el-col :span="11">
+                            <el-form-item prop="date2">
+                              <el-time-picker type="fixed-time" placeholder="选择时间" v-model="ruleForm.date2" style="width: 100%;"></el-time-picker>
+                            </el-form-item>
+                          </el-col>
+                        </el-form-item>
+                        <el-form-item label="是否免费" prop="delivery">
+                          <el-switch v-model="ruleForm.delivery"></el-switch>
+                        </el-form-item>
+                        <el-form-item label="文章标签" prop="type">
+                          <el-checkbox-group v-model="ruleForm.type">
+                            <el-checkbox label="美食" name="type"></el-checkbox>
+                            <el-checkbox label="活动" name="type"></el-checkbox>
+                            <el-checkbox label="娱乐" name="type"></el-checkbox>
+                            <el-checkbox label="学习" name="type"></el-checkbox>
+                          </el-checkbox-group>
+                        </el-form-item>
+                        <el-form-item label="特殊资源" prop="resource">
+                          <el-radio-group v-model="ruleForm.resource">
+                            <el-radio label="线上品牌商赞助"></el-radio>
+                            <el-radio label="线下场地免费"></el-radio>
+                          </el-radio-group>
+                        </el-form-item>
+                        <el-form-item label="活动形式" prop="desc">
+                          <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                          <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+                          <el-button @click="resetForm('ruleForm')">重置</el-button>
+                        </el-form-item>
+                      </el-form> -->
+
+                      <el-form ref="ruleForm" :rules="rules" :model="ruleForm" label-width="80px">
+                            <el-form-item label="文章名称" prop="name">
+                                <el-input v-model="ruleForm.name" placeholder=""></el-input>
+                            </el-form-item>
+                            <el-form-item label="文章类型" prop="types">
+                                <el-select v-model="ruleForm.types" placeholder="请选择类型">
+                                    <el-option label="类型一" value="古典"></el-option>
+                                    <el-option label="类型二" value="现代"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="发布时间">
+                                <el-col :span="12">
+                                    <el-form-item prop="date1">
+                                        <el-date-picker type="date" v-model="ruleForm.date1" placeholder="选择日期"></el-date-picker>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="12">
+                                    <el-form-item label="" prop="date2">
+                                        <el-time-picker v-model="ruleForm.date2" placeholder="选择时间"></el-time-picker>
+                                    </el-form-item>
+                                </el-col>
+                            </el-form-item>
+                            <el-form-item label="是否免费" prop="free">
+                                <el-switch v-model="ruleForm.free"></el-switch>
+                            </el-form-item>
+                            <el-form-item label="文章标签" prop="type" >
+                                <el-checkbox-group v-model="ruleForm.type">
+                                  <el-checkbox label="美食" ></el-checkbox>
+                                  <el-checkbox label="活动" ></el-checkbox>
+                                  <el-checkbox label="娱乐" ></el-checkbox>
+                                  <el-checkbox label="学习" ></el-checkbox>
+                                </el-checkbox-group>
+                            </el-form-item>
+                            <el-form-item label="来源" prop="resource">
+                                <el-radio-group v-model="ruleForm.resource">
+                                  <el-radio label="原创"></el-radio>
+                                  <el-radio label="网络"></el-radio>
+                                </el-radio-group>
+                            </el-form-item>
+                            <el-form-item label="补充" prop="desc">
+                                <el-input type="textarea" v-model="ruleForm.desc" placeholder=""></el-input>
+                            </el-form-item>
+                            <el-form-item >
+                                <el-button type="primary" @click="onSubmit('ruleForm')">立即创建</el-button>
+                                <el-button @click="resetForm('ruleForm')">重置</el-button>
+                            </el-form-item>
+                      </el-form>
+                </el-main>
+                <template >
+               
+            </template>
+            </el-container>           
+        </el-container>
+       
+    </div>   
+</body>
+<!-- 先引入 Vue -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- 引入组件库  饿了me组件 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+<!-- 引入调用数据的js文件 -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+   new Vue({
+       el:"#app",
+       data:{
+            isLoading: true,//初始化加载时转圈
+            tableData: [],//页面数据饿数组  
+            activePage:1,//当前页数
+            activPageSize:10,//显示多少条
+            ruleForm: {
+                name: '',
+                region: '',
+                date1: '',
+                date2: '',
+                delivery: false,
+                type: [],
+                resource: '',
+                desc: ''
+              },
+              rules: {
+          name: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          types: [
+            { required: true, message: '请选择活动区域', trigger: 'change' }
+          ],
+          date1: [
+            { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+          ],
+          date2: [
+            { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+          ],
+          type: [
+            { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
+          ],
+          resource: [
+            { required: true, message: '请选择资源', trigger: 'change' }
+          ],
+          desc: [
+            { required: true, message: '请填写形式', trigger: 'blur' }
+          ]
+        }
+
+       },
+       methods: {
+        handleOpen:function(e) {
+            this.$alert(e);
+        },
+        handleClose:function(e){
+            this.$alert(e);
+        },
+        // 获得数据的接口及赋值
+        getdata:function(){
+            axios.get('https://cnodejs.org/api/v1/topics', {
+                params: {
+                page:this.activePage,//当前第几页
+                limit:this.activPageSize//一页显示多少条
+                }
+            })
+            .then(function (response) {
+                //给定义的数组赋值,response.data.data从接口接到的数据
+                this.tableData=response.data.data;
+                this.isLoading=false;
+            }.bind(this))
+            .catch(function (error) {
+                console.log(error);
+            });
+        },
+        onSubmit:function() {
+        console.log('submit!');
+      },
+      resetForm:function(formName) {
+        this.$refs[formName].resetFields();
+      }
+      },
+
+
+    //   钩子函数,出发方法,还有created:function(){}
+      mounted:function(){
+          this.getdata();
+      },
+      
+      watch:{
+        //   监听的变量,异步完成数据更新
+        activePage:function(){
+            this.getdata();
+        },
+        activPageSize:function(){
+            this.getdata();
+        }
+      }
+         
+   })
+</script>
+</html>
