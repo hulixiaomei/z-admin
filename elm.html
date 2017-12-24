@@ -81,13 +81,10 @@
                 
                 <el-main>
                     <el-button type="danger" @click="delSelect">删除所选</el-button>
-                     <el-table v-loading="isLoading" :data="tableData" style="width: 100%" stripe style="text-align: center" @selection-change="handleSelectionChange">
-                            <el-table-column
-                            type="selection"
-                            width="55">
-                          </el-table-column>
-                        <el-table-column sortable prop="id" label="ID" ></el-table-column>
-                       <el-table-column sortable   label="日期" >
+                     <el-table v-loading="isLoading" :data="tableData" style="width: 100%" stripe style="text-align: center" @selection-change="selectionChange">
+                            <el-table-column type="selection" width="55"></el-table-column>
+                            <el-table-column sortable prop="id" label="ID" ></el-table-column>
+                            <el-table-column sortable   label="日期" >
                             <template slot-scope="scope">
                                 <i class="el-icon-time"></i>
                                 <span>{{scope.row.last_reply_at}}</span>
@@ -156,7 +153,9 @@
             form: {
                         index: 0,
                         title: ''
-                    }
+                    },
+            selections:[]
+            
 
        },
        methods: {
@@ -191,8 +190,23 @@
         changCurrente:function(Page){
                 this.activePage=Page;
         },
-        handleSelectionChange(value) {
-            this.multipleSelection = value;
+        // 存储选中的id
+        selectionChange(value) {
+            this.selections=[];
+            for(var k in value){
+              this.selections.push(value[k].id);
+            } 
+        },
+        delSelect:function(){
+            
+            for(var k in this.selections){
+                for(var j in this.tableData){
+                    if(this.selections[k]==this.tableData[j].id){
+                        this.tableData.splice(j,1);
+                        break;
+                    }
+                }
+            }
         },
         // 删除一条
         remove(index){
@@ -218,10 +232,7 @@
                 this.$message("修改成功");//饿了么ui  的message组件
             }.bind(this),1000)
         },
-        // 删除选中
-        delSelect:function () {
-
-        }
+        
         
       },
 
