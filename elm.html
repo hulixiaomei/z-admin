@@ -49,7 +49,7 @@
                 </el-menu>
 
             </el-aside>
-        
+            
             <el-container>
                 <el-header style=" font-size: 12px;background:#ccc;line-height:60px;">
                     <el-row>
@@ -80,8 +80,13 @@
                 </el-header>
                 
                 <el-main>
-                     <el-table v-loading="isLoading" :data="tableData" style="width: 100%" stripe style="text-align: center">
-                       <el-table-column prop="id" label="ID" ></el-table-column>
+                    <el-button type="danger" @click="delSelect">删除所选</el-button>
+                     <el-table v-loading="isLoading" :data="tableData" style="width: 100%" stripe style="text-align: center" @selection-change="handleSelectionChange">
+                            <el-table-column
+                            type="selection"
+                            width="55">
+                          </el-table-column>
+                        <el-table-column sortable prop="id" label="ID" ></el-table-column>
                        <el-table-column sortable   label="日期" >
                             <template slot-scope="scope">
                                 <i class="el-icon-time"></i>
@@ -92,7 +97,8 @@
                        <el-table-column prop="title" label="标题"></el-table-column>
                        <el-table-column sortable  label="操作">
                             <template slot-scope="scope">
-                                    <el-button size="mini" type="danger" @click="remove(scope.$index)">删除</el-button>
+                                <el-button size="mini" @click="ShowEditPanel(scope.$index)">编辑</el-button>
+                                <el-button size="mini" type="danger" @click="remove(scope.$index)">删除</el-button>
                             </template>
                            
                         </el-table-column>
@@ -115,7 +121,7 @@
             </el-container>           
         </el-container>
         <!-- 编辑dialog -->
-       <!-- <el-dialog title="">
+       <el-dialog title="" :visible.sync="isShowEditPanel"  v-cloak>
             <el-alert type="success" title="" show-icon >
                 当前索引:{{form.index}}
             </el-alert>
@@ -126,9 +132,9 @@
             </el-form>
             <div>
                 <el-button type="" @click="isShowEditPanel = false">取消</el-button>
-                <el-button type="primary" @click="saveEdit = false">确定</el-button>
+                <el-button type="primary" @click="saveEdit">确定</el-button>
             </div>
-       </el-dialog> -->
+       </el-dialog>
     </div>   
 </body>
 <!-- 先引入 Vue -->
@@ -145,8 +151,12 @@
             isLoading: true,//初始化加载时转圈
             tableData: [],//页面数据饿数组  
             activePage:1,//当前页数
-            activPageSize:10//显示多少条
-       
+            activPageSize:10,//显示多少条
+            isShowEditPanel: false,
+            form: {
+                        index: 0,
+                        title: ''
+                    }
 
        },
        methods: {
@@ -181,8 +191,36 @@
         changCurrente:function(Page){
                 this.activePage=Page;
         },
-        remove:function(index){
-            this.$cn
+        handleSelectionChange(value) {
+            this.multipleSelection = value;
+        },
+        // 删除一条
+        remove(index){
+            this.$confirm('是否删除文章:'+ this.tableData[index].title).then(function() {
+                this.tableData.splice(index,1);
+            }.bind(this)).catch(function(){
+
+            });
+        },
+        //展开编辑dialog
+        ShowEditPanel: function (index) {
+            this.form.index = index;
+            this.form.title = this.tableData[index].title;
+            this.isShowEditPanel = true;
+        },
+        // 保存到服务器
+        saveEdit  :function () {
+            this.tableData[this.form.index].title = this.form.title;
+            this.isShowEditPanel = false;
+            this.isLoading = true;
+            setTimeout(function(){
+                this.isLoading = false;
+                this.$message("修改成功");//饿了么ui  的message组件
+            }.bind(this),1000)
+        },
+        // 删除选中
+        delSelect:function () {
+
         }
         
       },
